@@ -9,7 +9,8 @@ export default function InputText(props) {
     const [isExpanded, setExpanded] = useState(false)
     const [fullNote, setFullNote] = useState({
         title: "",
-        content: ""
+        content: "",
+        timestamp: null
     })
     
     // Handle edit mode
@@ -17,7 +18,8 @@ export default function InputText(props) {
         if (props.editNote) {
             setFullNote({
                 title: props.editNote.title,
-                content: props.editNote.content
+                content: props.editNote.content,
+                timestamp: props.editNote.timestamp || new Date().toISOString()
             });
             setExpanded(true);
         }
@@ -35,10 +37,15 @@ export default function InputText(props) {
         event.preventDefault();
         // Check if both title and content are not empty (after trimming whitespace)
         if (fullNote.title.trim() && fullNote.content.trim()) {
-            props.onAdd(fullNote);
+            const noteWithTimestamp = {
+                ...fullNote,
+                timestamp: fullNote.timestamp || new Date().toISOString()
+            };
+            props.onAdd(noteWithTimestamp);
             setFullNote({
                 title: "",
-                content: ""
+                content: "",
+                timestamp: null
             });
             setExpanded(false);
         } else {
@@ -54,7 +61,8 @@ export default function InputText(props) {
     function handleCancel() {
         setFullNote({
             title: "",
-            content: ""
+            content: "",
+            timestamp: null
         });
         setExpanded(false);
         if (props.onCancel) {

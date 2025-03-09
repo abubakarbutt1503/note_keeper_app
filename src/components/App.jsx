@@ -15,14 +15,22 @@ function App() {
       // Update existing note
       setNotes(prevNotes => {
         const updatedNotes = [...prevNotes];
-        updatedNotes[editingNote] = { ...newNote, favorite: prevNotes[editingNote].favorite || false };
+        updatedNotes[editingNote] = { 
+          ...newNote, 
+          favorite: prevNotes[editingNote].favorite || false,
+          timestamp: new Date().toISOString() // Update timestamp on edit
+        };
         return updatedNotes;
       });
       setEditingNote(null);
     } else {
       // Add new note
       setNotes(prevNotes => {
-        return [...prevNotes, { ...newNote, favorite: false }];
+        return [...prevNotes, { 
+          ...newNote, 
+          favorite: false,
+          timestamp: new Date().toISOString() // Add timestamp for new note
+        }];
       });
     }
   }
@@ -83,6 +91,7 @@ function App() {
                 title={noteItem.title} 
                 content={noteItem.content}
                 favorite={noteItem.favorite}
+                timestamp={noteItem.timestamp} // Pass timestamp to Note component
                 onDelete={deleteNote}
                 onEdit={editNote}
                 onFavorite={toggleFavorite}
