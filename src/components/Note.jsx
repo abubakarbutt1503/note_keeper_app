@@ -1,18 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
+import ArchiveIcon from '@mui/icons-material/Archive';
+import UnarchiveIcon from '@mui/icons-material/Unarchive';
+import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import Tooltip from '@mui/material/Tooltip';
 
-function Note(props) {
-  const [isFavorite, setIsFavorite] = useState(props.favorite || false);
+function Note({ 
+  id, 
+  title, 
+  content, 
+  favorite, 
+  archived, 
+  timestamp, 
+  trashed,
+  onDelete, 
+  onEdit, 
+  onFavorite,
+  onArchive,
+  onRestore
+}) {
+  const [isFavorite, setIsFavorite] = useState(favorite || false);
+  
+  useEffect(() => {
+    setIsFavorite(favorite || false);
+  }, [favorite]);
 
   const handleFavoriteClick = () => {
     const newFavoriteStatus = !isFavorite;
     setIsFavorite(newFavoriteStatus);
-    if (props.onFavorite) {
-      props.onFavorite(props.id, newFavoriteStatus);
+    if (onFavorite) {
+      onFavorite(id, newFavoriteStatus);
     }
   };
 
@@ -45,42 +66,74 @@ function Note(props) {
   };
 
   return (
-    <div className={`note ${isFavorite ? 'favorite' : ''}`}>
+    <div className={`note ${isFavorite ? 'favorite' : ''} ${archived ? 'archived' : ''}`}>
       <div className="note-content">
-        <h2>{props.title}</h2>
-        <p>{props.content}</p>
-        {props.timestamp && (
+        <h2>{title}</h2>
+        <p>{content}</p>
+        {timestamp && (
           <div className="note-timestamp">
             <AccessTimeIcon style={{ fontSize: '14px', marginRight: '4px' }} />
-            {formatDate(props.timestamp)}
+            {formatDate(timestamp)}
           </div>
         )}
       </div>
       <div className="note-buttons">
-        <button 
-          className={`favorite-button ${isFavorite ? 'active' : ''}`}
-          onClick={handleFavoriteClick}
-        >
-          {isFavorite ? <StarIcon /> : <StarBorderIcon />}
-        </button>
+        {!trashed && (
+          <Tooltip title={isFavorite ? "Remove from favorites" : "Add to favorites"}>
+            <button 
+              className={`favorite-button ${isFavorite ? 'active' : ''}`}
+              onClick={handleFavoriteClick}
+            >
+              {isFavorite ? <StarIcon /> : <StarBorderIcon />}
+            </button>
+          </Tooltip>
+        )}
         <div className="note-buttons-right">
-          <button 
-            className="edit-button" 
-            onClick={() => {
-              props.onEdit(props.id, props.title, props.content);
-            }}
-          >
-            <EditIcon style={{ fontSize: '16px' }} />
-            Edit
-          </button>
-          <button 
-            className="deleteButton" 
-            onClick={() => {
-              props.onDelete(props.id);
-            }}
-          >
-            <DeleteIcon />
-          </button>
+          {trashed ? (
+            <Tooltip title="Restore from trash">
+              <button 
+                className="restore-button" 
+                onClick={() => onRestore(id)}
+              >
+                <RestoreFromTrashIcon />
+                Restore
+              </button>
+            </Tooltip>
+          ) : (
+            <>
+              {!archived && (
+                <Tooltip title="Edit note">
+                  <button 
+                    className="edit-button" 
+                    onClick={() => onEdit(id, title, content)}
+                  >
+                    <EditIcon style={{ fontSize: '16px' }} />
+                    Edit
+                  </button>
+                </Tooltip>
+              )}
+              
+              <Tooltip title={archived ? "Unarchive note" : "Archive note"}>
+                <button 
+                  className="archive-button" 
+                  onClick={() => onArchive(id)}
+                >
+                  {archived ? <UnarchiveIcon /> : <ArchiveIcon />}
+                  {archived ? 'Unarchive' : 'Archive'}
+                </button>
+              </Tooltip>
+            </>
+          )}
+          
+          <Tooltip title={trashed ? "Delete forever" : "Move to trash"}>
+            <button 
+              className="deleteButton" 
+              onClick={() => onDelete(id)}
+            >
+              <DeleteIcon />
+              {trashed ? 'Delete Forever' : ''}
+            </button>
+          </Tooltip>
         </div>
       </div>
     </div>

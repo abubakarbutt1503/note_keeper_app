@@ -39,15 +39,17 @@ body {
 header {
   animation: slideIn 0.5s ease-out;
   height: 64px;
-  margin: 0;
+  margin: auto;
   padding: 0 32px;
   background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
   box-shadow: 0 2px 8px var(--shadow-color);
   display: flex;
   align-items: center;
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
 }
 
 header::after {
@@ -72,7 +74,8 @@ header::after {
   gap: 12px;
   width: 100%;
   justify-content: center;
-  padding-left: 48px;
+  position: relative;
+  margin-left: 48px;
 }
 
 .header-logo {
@@ -97,7 +100,7 @@ header h1 {
   border-radius: 16px;
   box-shadow: 0 4px 6px var(--shadow-color);
   padding: 24px;
-  width: 280px;
+  width: 340px;
   margin: 16px;
   transition: all 0.3s ease;
   cursor: pointer;
@@ -133,6 +136,7 @@ header h1 {
   opacity: 0;
   transform: translateY(10px);
   transition: all 0.3s ease;
+  gap: 8px;
 }
 
 .note:hover .note-buttons {
@@ -142,7 +146,15 @@ header h1 {
 
 .note-buttons-right {
   display: flex;
-  gap: 8px;
+  gap: 12px;
+  flex-wrap: nowrap;
+}
+
+.edit-button, .archive-button, .deleteButton, .restore-button {
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  min-width: fit-content;
 }
 
 .favorite-button {
@@ -374,9 +386,8 @@ footer {
 
   .note {
     width: calc(100% - 24px);
-    padding: 14px;
-    margin: 8px 12px;
-    border-radius: 12px;
+    min-width: 280px;
+    padding: 16px;
   }
 
   .note-content h2 {
@@ -391,14 +402,17 @@ footer {
   }
 
   .note-buttons {
-    margin-top: 10px;
-    gap: 6px;
+    opacity: 1;
+    transform: none;
   }
 
-  .edit-button, .deleteButton {
-    padding: 5px 10px;
+  .note-buttons-right {
+    gap: 8px;
+  }
+
+  .edit-button, .archive-button, .deleteButton, .restore-button {
+    padding: 4px 8px;
     font-size: 0.85rem;
-    border-radius: 16px;
   }
 
   .edit-button svg, .deleteButton svg {
@@ -421,7 +435,7 @@ footer {
 
   header {
     height: 56px;
-    padding: 0 12px;
+    padding: 0 16px;
   }
 
   header h1 {
@@ -443,12 +457,42 @@ footer {
     margin-top: 8px;
     padding-top: 6px;
   }
+
+  .drawer-toggle {
+    left: 8px;
+    padding: 6px;
+  }
+  
+  .drawer-toggle svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .header-content {
+    margin-left: 40px;
+  }
+
+  .app-drawer {
+    width: 256px;
+    margin-top: 56px;
+  }
+
+  .MuiDrawer-paper {
+    margin-top: 56px !important;
+  }
+
+  .main-content {
+    margin-left: 0;
+    margin-top: 56px;
+    padding: 16px;
+  }
 }
 
 /* Tablet Styles */
 @media (min-width: 769px) and (max-width: 1024px) {
   .note {
     width: calc(50% - 32px);
+    min-width: 320px;
   }
 
   .notes-container {
@@ -536,7 +580,9 @@ footer {
 }
 
 .main-content {
-  flex-grow: 1;
+  margin-left: 280px;
+  margin-top: 64px;
+  padding: 24px;
   transition: margin-left 0.3s ease;
 }
 
@@ -550,12 +596,19 @@ footer {
 /* Drawer Styles */
 .app-drawer {
   width: 280px;
+  margin-top: 64px;
+}
+
+.MuiDrawer-paper {
+  margin-top: 64px !important;
+  background-color: var(--drawer-background) !important;
+  border-right: 1px solid var(--divider-color);
 }
 
 .drawer-header {
   display: flex;
   align-items: center;
-  padding: 16px;
+  padding: 16px 24px;
   gap: 12px;
 }
 
@@ -565,46 +618,139 @@ footer {
 }
 
 .drawer-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: -0.3px;
+  font-size: 1.4rem;
+  font-weight: 500;
   color: var(--text-color);
 }
 
 .drawer-list {
-  padding: 8px !important;
+  padding: 8px 12px !important;
 }
 
 .drawer-list-item {
-  margin: 2px 8px !important;
-  border-radius: 8px !important;
-  padding: 8px 24px !important;
-  font-size: 1.1rem !important;
+  border-radius: 0 24px 24px 0 !important;
+  margin: 4px 0 !important;
+  padding: 12px 24px !important;
+  transition: all 0.2s ease-in-out !important;
 }
 
 .drawer-list-item:hover {
   background-color: var(--hover-background) !important;
+  color: var(--text-color) !important;
 }
 
 .drawer-list-item.active {
   background-color: var(--active-background) !important;
+  color: var(--text-color) !important;
+  font-weight: 500 !important;
+}
+
+.drawer-list-item.active .drawer-icon {
   color: var(--primary-color) !important;
 }
 
 .drawer-icon {
   color: var(--text-color) !important;
   min-width: 40px !important;
+  transition: color 0.2s ease-in-out !important;
 }
 
-.drawer-list-item:hover .drawer-icon,
-.drawer-list-item.active .drawer-icon {
-  color: var(--primary-color) !important;
+/* List item text color */
+.MuiListItemText-primary {
+  color: var(--text-color) !important;
+  font-weight: 500 !important;
 }
 
-.menu-button {
-  position: absolute !important;
-  left: 12px !important;
-  margin-right: 0 !important;
+/* Remove the hover text color change */
+.drawer-list-item:hover .MuiListItemText-primary,
+.drawer-list-item.active .MuiListItemText-primary {
+  color: var(--text-color) !important;
+}
+
+.MuiDivider-root {
+  background-color: var(--divider-color) !important;
+}
+
+/* Page Styles */
+.notes-page,
+.reminders-page,
+.labels-page,
+.archive-page,
+.trash-page {
+  padding: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.reminders-page h1,
+.labels-page h1,
+.archive-page h1,
+.trash-page h1 {
+  font-size: 1.75rem;
+  font-weight: 500;
+  color: var(--text-color);
+  margin: 16px 0 24px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  text-align: center;
+  color: var(--text-color);
+  opacity: 0.7;
+  font-size: 1.1rem;
+}
+
+/* Labels Page Styles */
+.label-input {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  max-width: 600px;
+}
+
+.add-label-button {
+  min-width: 100px !important;
+}
+
+.labels-list {
+  max-width: 600px;
+}
+
+.label-item {
+  border-radius: 8px;
+  margin-bottom: 8px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.label-item:hover {
+  background-color: var(--hover-background);
+}
+
+.edit-label-button,
+.delete-label-button {
+  opacity: 0.7;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.edit-label-button:hover,
+.delete-label-button:hover {
+  opacity: 1;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .drawer-list-item {
+    padding: 10px 16px !important;
+  }
+  
+  .label-input {
+    flex-direction: column;
+    gap: 8px;
+  }
 }
 
 /* Mobile Styles */
@@ -621,31 +767,6 @@ footer {
     padding: 16px;
     justify-content: center;
   }
-}
-
-/* Drawer specific styles */
-.MuiDrawer-paper {
-  background-color: var(--drawer-background) !important;
-}
-
-.MuiDivider-root {
-  background-color: var(--divider-color) !important;
-}
-
-/* Note buttons */
-.note-buttons button {
-  color: var(--text-color);
-}
-
-/* Header styles */
-header {
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-}
-
-/* List item text color */
-.MuiListItemText-primary {
-  color: var(--text-color) !important;
-  font-weight: 500 !important;
 }
 
 /* Scrollbar styles */
@@ -680,4 +801,193 @@ header {
 .note-timestamp svg {
   color: var(--text-color);
   opacity: 0.7;
+}
+
+.archive-button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.archive-button:hover {
+  background-color: var(--accent-color);
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.restore-button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--accent-color) !important;
+  color: white !important;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px var(--shadow-color);
+}
+
+.restore-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow-color);
+  opacity: 0.95;
+}
+
+.restore-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.restore-button svg {
+  width: 20px !important;
+  height: 20px !important;
+  transition: transform 0.3s ease;
+}
+
+.restore-button:hover svg {
+  transform: rotate(-90deg);
+}
+
+@media (max-width: 768px) {
+  .restore-button {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+  
+  .restore-button svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+}
+
+.note.archived {
+  background: linear-gradient(to bottom right, rgba(99, 102, 241, 0.05), rgba(99, 102, 241, 0.1));
+  border-color: rgba(99, 102, 241, 0.2);
+}
+
+/* Responsive styles for buttons */
+@media (max-width: 768px) {
+  .archive-button,
+  .restore-button {
+    padding: 5px 10px;
+    font-size: 0.85rem;
+  }
+}
+
+.favorites-page {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.favorites-page h1 {
+  font-size: 1.75rem;
+  font-weight: 500;
+  color: var(--text-color);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Badge styles */
+.MuiBadge-badge {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+/* Active favorite item in drawer */
+.drawer-list-item.active .MuiBadge-badge {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+@media (max-width: 768px) {
+  .favorites-page {
+    padding: 16px;
+  }
+
+  .favorites-page h1 {
+    font-size: 1.5rem;
+    margin-bottom: 16px;
+  }
+}
+
+/* Adjust main content margin */
+.main-content {
+  margin-left: 280px;
+  padding-top: 16px;
+  transition: margin-left 0.3s ease;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .app-drawer {
+    width: 256px;
+  }
+
+  .drawer-header {
+    padding: 10px 16px;
+  }
+
+  .drawer-title {
+    font-size: 1.2rem;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+}
+
+.drawer-toggle {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent !important;
+  color: white !important;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.drawer-toggle:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.drawer-toggle svg {
+  width: 24px !important;
+  height: 24px !important;
+}
+
+@media (max-width: 768px) {
+  .drawer-toggle {
+    left: 8px;
+    padding: 6px;
+  }
+  
+  .drawer-toggle svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
 }
