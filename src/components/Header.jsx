@@ -1,20 +1,16 @@
 import React from "react";
-import { IconButton } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
+import { useNavigate } from "react-router-dom";
 
-function Header({ onMenuClick }) {
+function Header() {
+    const navigate = useNavigate();
+
+    const handleLogoClick = () => {
+        navigate('/');
+    };
+
     return (
         <header>
-            <IconButton
-                className="menu-button"
-                size="large"
-                edge="start"
-                color="inherit"
-                onClick={onMenuClick}
-            >
-                <MenuIcon />
-            </IconButton>
-            <div className="header-content">
+            <div className="header-content" onClick={handleLogoClick}>
                 <img 
                     src="https://www.gstatic.com/images/branding/product/1x/keep_2020q4_48dp.png"
                     alt="Keep"

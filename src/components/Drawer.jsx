@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
     Drawer,
     List,
@@ -6,25 +7,66 @@ import {
     ListItemIcon,
     ListItemText,
     IconButton,
-    Divider
+    Divider,
+    Tooltip,
+    Badge
 } from '@mui/material';
 import {
     LightbulbOutlined,
-    NotificationsNoneOutlined,
+    StarOutline,
     EditOutlined,
     ArchiveOutlined,
     DeleteOutlineOutlined,
     Menu
 } from '@mui/icons-material';
 
-const SideDrawer = ({ open, onClose, onOpen }) => {
+const SideDrawer = ({ open, onClose, onOpen, favoriteCount = 0 }) => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    
     const menuItems = [
-        { id: 1, name: 'Notes', icon: <LightbulbOutlined /> },
-        { id: 2, name: 'Reminders', icon: <NotificationsNoneOutlined /> },
-        { id: 3, name: 'Edit labels', icon: <EditOutlined /> },
-        { id: 4, name: 'Archive', icon: <ArchiveOutlined /> },
-        { id: 5, name: 'Trash', icon: <DeleteOutlineOutlined /> }
+        { 
+            id: 1, 
+            name: 'Notes', 
+            icon: <LightbulbOutlined />, 
+            path: '/',
+            tooltip: 'View your notes'
+        },
+        { 
+            id: 2, 
+            name: 'Favorites', 
+            icon: <StarOutline />, 
+            path: '/favorites',
+            tooltip: 'View your favorite notes',
+            badge: favoriteCount
+        },
+        { 
+            id: 3, 
+            name: 'Edit labels', 
+            icon: <EditOutlined />, 
+            path: '/labels',
+            tooltip: 'Create and manage labels'
+        },
+        { 
+            id: 4, 
+            name: 'Archive', 
+            icon: <ArchiveOutlined />, 
+            path: '/archive',
+            tooltip: 'View archived notes'
+        },
+        { 
+            id: 5, 
+            name: 'Trash', 
+            icon: <DeleteOutlineOutlined />, 
+            path: '/trash',
+            tooltip: 'View deleted notes'
+        }
     ];
+
+    const handleNavigation = (path) => {
+        navigate(path);
+        onClose();
+    };
 
     return (
         <>
@@ -34,6 +76,7 @@ const SideDrawer = ({ open, onClose, onOpen }) => {
                 size="large"
                 edge="start"
                 color="inherit"
+                aria-label="menu"
             >
                 <Menu />
             </IconButton>
@@ -43,6 +86,13 @@ const SideDrawer = ({ open, onClose, onOpen }) => {
                 onClose={onClose}
                 variant="temporary"
                 className="app-drawer"
+                PaperProps={{
+                    sx: {
+                        width: 280,
+                        borderTopRightRadius: 8,
+                        borderBottomRightRadius: 8
+                    }
+                }}
             >
                 <div className="drawer-header">
                     <img 
@@ -55,16 +105,29 @@ const SideDrawer = ({ open, onClose, onOpen }) => {
                 <Divider />
                 <List className="drawer-list">
                     {menuItems.map((item) => (
-                        <ListItem 
-                            button 
-                            key={item.id}
-                            className="drawer-list-item"
+                        <Tooltip 
+                            key={item.id} 
+                            title={item.tooltip} 
+                            placement="right"
+                            arrow
                         >
-                            <ListItemIcon className="drawer-icon">
-                                {item.icon}
-                            </ListItemIcon>
-                            <ListItemText primary={item.name} />
-                        </ListItem>
+                            <ListItem 
+                                button 
+                                onClick={() => handleNavigation(item.path)}
+                                className={`drawer-list-item ${location.pathname === item.path ? 'active' : ''}`}
+                            >
+                                <ListItemIcon className="drawer-icon">
+                                    {item.badge > 0 ? (
+                                        <Badge badgeContent={item.badge} color="primary">
+                                            {item.icon}
+                                        </Badge>
+                                    ) : (
+                                        item.icon
+                                    )}
+                                </ListItemIcon>
+                                <ListItemText primary={item.name} />
+                            </ListItem>
+                        </Tooltip>
                     ))}
                 </List>
             </Drawer>
