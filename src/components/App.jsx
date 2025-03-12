@@ -15,8 +15,8 @@ function App() {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   function addNote(newNote) {
+    
     if (editingNote !== null) {
-      // Update existing note
       setNotes(prevNotes => {
         const updatedNotes = [...prevNotes];
         updatedNotes[editingNote] = { 
