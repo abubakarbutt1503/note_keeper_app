@@ -364,52 +364,47 @@ footer {
   }
 
   .form {
-    width: 92%;
+    width: 95%;
     margin: 16px auto;
     padding: 16px;
-    padding-bottom: 48px;
-    border-radius: 10px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px var(--shadow-color);
   }
 
   .form input,
   .form textarea {
-    padding: 8px 12px;
-    font-size: 0.95rem;
+    padding: 12px 16px;
+    font-size: 1rem;
+    border-radius: 8px;
+    margin-bottom: 8px;
   }
 
   .form-buttons {
     right: 12px;
     bottom: -16px;
-    gap: 6px;
-  }
-
-  /* Increase touch target sizes for buttons on mobile */
-  .addButton,
-  .cancelButton,
-  .edit-button,
-  .archive-button,
-  .deleteButton,
-  .restore-button {
-    min-width: 48px;
-    min-height: 48px;
+    gap: 8px;
   }
 
   .addButton,
   .cancelButton {
-    width: 48px !important;
-    height: 48px !important;
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 50% !important;
+    box-shadow: 0 2px 6px var(--shadow-color) !important;
   }
 
   .note {
     width: 100%;
-    margin: 8px 0;
+    margin: 12px 0;
     padding: 16px;
     border-radius: 12px;
+    box-shadow: 0 2px 6px var(--shadow-color);
   }
 
   .note-content h2 {
     font-size: 1.1rem;
     margin-bottom: 8px;
+    line-height: 1.4;
   }
 
   .note-content p {
@@ -418,27 +413,27 @@ footer {
     margin-bottom: 12px;
   }
 
-  .notes-container {
-    padding: 8px;
-    gap: 8px;
-    justify-content: center;
-  }
-
   .note-buttons {
-    gap: 6px;
-    /* Make buttons always visible on mobile for easier tapping */
     opacity: 1;
     transform: none;
+    gap: 8px;
+    margin-top: 12px;
   }
 
   .note-buttons button {
-    padding: 6px 10px;
-    font-size: 0.85rem;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    border-radius: 20px;
+    min-width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .note-buttons svg {
-    width: 18px !important;
-    height: 18px !important;
+    width: 20px !important;
+    height: 20px !important;
   }
 
   .note-timestamp {
@@ -450,6 +445,7 @@ footer {
   .empty-state {
     padding: 32px 16px;
     font-size: 1rem;
+    text-align: center;
   }
 
   /* Adjust header text for mobile */
@@ -463,28 +459,37 @@ footer {
   }
 
   .drawer-list-item {
-    padding: 8px 16px !important;
+    padding: 12px 16px !important;
+    margin: 4px 0 !important;
+    border-radius: 12px !important;
     font-size: 1rem !important;
   }
 
-  .note-timestamp {
-    font-size: 0.75rem;
-    margin-top: 8px;
-    padding-top: 6px;
+  .drawer-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--divider-color);
+  }
+
+  .drawer-title {
+    font-size: 1.3rem;
+    font-weight: 600;
   }
 
   .drawer-toggle {
-    left: 8px;
-    padding: 6px;
+    left: 12px;
+    padding: 8px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
   }
 
   .drawer-toggle svg {
-    width: 20px !important;
-    height: 20px !important;
+    width: 24px !important;
+    height: 24px !important;
   }
 
   .app-drawer {
-    width: 256px;
+    width: 280px;
     margin-top: 56px;
   }
 
@@ -503,6 +508,105 @@ footer {
 @media (max-width: 480px) {
   html {
     font-size: 13px;
+  }
+
+  .form {
+    width: 92%;
+    margin: 12px auto;
+    padding: 12px;
+  }
+
+  .form input,
+  .form textarea {
+    padding: 10px 12px;
+    font-size: 0.95rem;
+  }
+
+  .addButton,
+  .cancelButton {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .note {
+    padding: 12px;
+    margin: 8px 0;
+  }
+
+  .note-content h2 {
+    font-size: 1rem;
+  }
+
+  .note-content p {
+    font-size: 0.9rem;
+  }
+
+  .note-buttons button {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    min-width: 40px;
+    height: 40px;
+  }
+
+  .note-buttons svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  .app-drawer {
+    width: 260px;
+  }
+
+  .drawer-list-item {
+    padding: 10px 14px !important;
+    font-size: 0.95rem !important;
+  }
+
+  .drawer-icon {
+    width: 22px !important;
+    height: 22px !important;
+  }
+
+  .drawer-toggle {
+    left: 8px;
+    padding: 6px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .drawer-toggle svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+}
+
+/* Touch-friendly styles */
+@media (hover: none) {
+  .note-buttons {
+    opacity: 1;
+    transform: none;
+  }
+
+  .note-buttons button:active {
+    transform: scale(0.95);
+  }
+
+  .drawer-list-item:active {
+    background-color: var(--active-background) !important;
+  }
+}
+
+/* Improve touch targets */
+@media (max-width: 768px) {
+  button, 
+  .drawer-list-item,
+  .note {
+    touch-action: manipulation;
+  }
+
+  .note-buttons button,
+  .drawer-list-item {
+    min-height: 44px;
   }
 }
 
@@ -583,14 +687,6 @@ footer {
 
 .edit-button:hover svg, .deleteButton:hover svg {
   transform: rotate(90deg);
-}
-
-/* Mobile Adjustments for Edit and Delete Buttons */
-@media (max-width: 768px) {
-  .edit-button {
-    padding: 4px 10px;
-    font-size: 0.8rem;
-  }
 }
 
 /* App Layout */
@@ -998,5 +1094,169 @@ footer {
   .drawer-toggle svg {
     width: 20px !important;
     height: 20px !important;
+  }
+}
+
+/* Responsive Note-Taking Feature */
+
+@media (max-width: 480px) {
+  .form {
+    width: 90%;
+    margin: 12px auto;
+    padding: 12px;
+    border-radius: 8px;
+  }
+
+  .form input,
+  .form textarea {
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
+
+  .form-buttons {
+    right: 10px;
+    bottom: -14px;
+    gap: 4px;
+  }
+
+  .addButton,
+  .cancelButton {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .note {
+    width: 100%;
+    margin: 6px 0;
+    padding: 12px;
+    border-radius: 10px;
+  }
+
+  .note-content h2 {
+    font-size: 1rem;
+    margin-bottom: 6px;
+  }
+
+  .note-content p {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin-bottom: 10px;
+  }
+
+  .note-buttons {
+    gap: 4px;
+  }
+
+  .note-buttons button {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+  }
+
+  .note-buttons svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  .note-timestamp {
+    font-size: 0.7rem;
+    margin-top: 6px;
+    padding-top: 4px;
+  }
+
+  .empty-state {
+    padding: 24px 12px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Responsive Side Drawer */
+
+@media (max-width: 480px) {
+  .app-drawer {
+    width: 220px;
+    margin-top: 48px;
+  }
+
+  .drawer-list-item {
+    padding: 6px 12px !important;
+    font-size: 0.9rem !important;
+  }
+
+  .drawer-header {
+    padding: 8px 16px;
+  }
+
+  .drawer-title {
+    font-size: 1.2rem;
+  }
+
+  .drawer-toggle {
+    left: 6px;
+    padding: 4px;
+  }
+
+  .drawer-toggle svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .app-drawer {
+    width: 240px;
+    margin-top: 56px;
+  }
+
+  .drawer-list-item {
+    padding: 8px 16px !important;
+    font-size: 0.95rem !important;
+  }
+
+  .drawer-header {
+    padding: 10px 20px;
+  }
+
+  .drawer-title {
+    font-size: 1.3rem;
+  }
+
+  .drawer-toggle {
+    left: 8px;
+    padding: 6px;
+  }
+
+  .drawer-toggle svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .app-drawer {
+    width: 260px;
+    margin-top: 64px;
+  }
+
+  .drawer-list-item {
+    padding: 10px 20px !important;
+    font-size: 1rem !important;
+  }
+
+  .drawer-header {
+    padding: 12px 24px;
+  }
+
+  .drawer-title {
+    font-size: 1.4rem;
+  }
+
+  .drawer-toggle {
+    left: 10px;
+    padding: 8px;
+  }
+
+  .drawer-toggle svg {
+    width: 22px !important;
+    height: 22px !important;
   }
 }
